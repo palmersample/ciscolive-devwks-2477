@@ -1,0 +1,66 @@
+{
+  "edit-id": "remove_ip",
+  "operation": "remove",
+  "target": "/interface/{{ interface_type }}={{ interface_name }}/ip"
+},
+{
+  "edit-id": "is_switchport",
+  "operation": "merge",
+  "target": "/interface/{{ interface_type }}={{ interface_name }}/switchport-conf/switchport",
+  "value": {
+    "Cisco-IOS-XE-native:switchport": true
+  }
+},
+{
+  "edit-id": "switchport_mode",
+  "operation": "merge",
+  "target": "/interface/{{ interface_type }}={{ interface_name }}/switchport-config/switchport/mode",
+  "value": {
+    "Cisco-IOS-XE-switch:mode": {
+      "{{ switchport_mode }}": {}
+    }
+  }
+},
+{% if switchport_mode == "access" %}
+{
+  "edit-id": "remove_unused_config",
+  "operation": "remove",
+  "target": "/interface/{{ interface_type }}={{ interface_name }}/switchport-config/switchport/trunk"
+}
+{%- elif switchport_mode == "trunk" -%}
+{
+  "edit-id": "remove_unused_config",
+  "operation": "remove",
+  "target": "/interface/{{ interface_type }}={{ interface_name }}/switchport-config/switchport/access"
+}
+{%- endif -%}{% if (
+                       switchport_mode == "trunk" and
+                       (switchport_native_vlan or switchport_allowed_vlans)
+                   ) or (
+                       switchport_mode == "access" and switchport_native_vlan
+                   ) %},
+{
+  "edit-id": "port_vlan",
+  "operation": "merge",
+  "target": "/interface/{{ interface_type }}={{ interface_name }}/switchport-config/switchport/{{ switchport_mode }}",
+  "value": {
+    "Cisco-IOS-XE-switch:{{ switchport_mode }}": {
+      {% if switchport_mode == "access" %}
+      "vlan": {
+        "vlan": {{ switchport_native_vlan }}
+      }
+      {% else %}
+      "native": {
+        "vlan": {
+          "vlan-id": {{ switchport_native_vlan }}
+        }
+      },
+      "allowed": {
+        "vlan": {
+          "vlans": "{{ switchport_allowed_vlans }}"
+        }
+      }
+      {% endif %}
+    }
+  }
+}{% endif %}

@@ -1,0 +1,10 @@
+{
+  "edit-id": "interface_description",
+  "operation": "{{ 'merge' if interface_description else 'remove' }}",
+  "target": "/interface/{{ interface_type }}={{ interface_name }}/description"{{ "," if interface_description }}
+{% if interface_description %}
+  "value": {
+    "Cisco-IOS-XE-native:description": "{{ interface_description }}"
+  }
+{% endif %}
+}

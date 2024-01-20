@@ -1,0 +1,31 @@
+{#
+## These macros are created so calling the include acts as a function, which
+## allows the "indent" filter for easier readability
+#}
+{% macro interface_state_template() %}{% include "patches/interface_state.j2" %}{% endmacro %}
+{% macro interface_mtu_template() %}{% include "patches/interface_mtu.j2" %}{% endmacro %}
+{% macro interface_description_template() %}{% include "patches/interface_description.j2" %}{% endmacro %}
+{% macro l2_interface_template() %}{% include "patches/l2_interface.j2" %}{% endmacro %}
+{% macro l3_interface_template() %}{% include "patches/l3_interface.j2" %}{% endmacro %}
+{
+  "ietf-yang-patch:yang-patch": {
+    "patch-id": "update_interface_settings",
+    "edit": [
+      {{ interface_description_template() | indent(6) }},
+      {{ interface_state_template() | indent(6) }}
+      {{ interface_mtu_template() | indent(6) }}
+
+{#
+{{ "," if interface_description is defined or
+                                                            switchport_mode is defined }}
+{% if switchport_mode is defined %}
+{% if not switchport_mode %}
+      {{ l3_interface_template() | indent(6) }}
+{% else %}
+      {{ l2_interface_template() | indent(6) }}
+{% endif %}
+{% endif %}
+#}
+    ]
+  }
+}
