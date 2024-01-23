@@ -2,6 +2,7 @@
 ## These macros are created so calling the include acts as a function, which
 ## allows the "indent" filter for easier readability
 #}
+{% set interface_name = interface_name | replace("/", "%2F")  %}
 {% macro interface_state_template() %}{% include "patches/interface_state.j2" %}{% endmacro %}
 {% macro interface_mtu_template() %}{% include "patches/interface_mtu.j2" %}{% endmacro %}
 {% macro interface_description_template() %}{% include "patches/interface_description.j2" %}{% endmacro %}
@@ -12,12 +13,8 @@
     "patch-id": "update_interface_settings",
     "edit": [
       {{ interface_description_template() | indent(6) }},
-      {{ interface_state_template() | indent(6) }}
-      {{ interface_mtu_template() | indent(6) }}
-
-{#
-{{ "," if interface_description is defined or
-                                                            switchport_mode is defined }}
+      {{ interface_state_template() | indent(6) }},
+      {{ interface_mtu_template() | indent(6) }}{{ "," if switchport_mode is defined }}
 {% if switchport_mode is defined %}
 {% if not switchport_mode %}
       {{ l3_interface_template() | indent(6) }}
@@ -25,7 +22,6 @@
       {{ l2_interface_template() | indent(6) }}
 {% endif %}
 {% endif %}
-#}
     ]
   }
 }

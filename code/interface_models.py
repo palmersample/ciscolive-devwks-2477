@@ -1,8 +1,12 @@
-from pydantic import BaseModel, model_validator, Field, field_validator
-import re
-from typing import Optional, Any, ClassVar, Annotated, Literal, Union
-from urllib.parse import quote as url_quote
+"""
+Interface data model definitions
+"""
+# pylint: disable=unused-import
 import ipaddress
+import re
+from typing import Optional
+from pydantic import BaseModel, model_validator, Field, field_validator
+
 
 # Regular expression to split interface type and ID.
 #
@@ -17,4 +21,3 @@ INTERFACE_REGEX = re.compile(r"(\D+)(.*)")
 # 25.2
 # 1/0/3.100
 YANG_REGEX = re.compile(r'(0|[1-9][0-9]*)(/(0|[1-9][0-9]*))*(\.[0-9]*)?')
-

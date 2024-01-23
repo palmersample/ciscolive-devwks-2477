@@ -1,7 +1,7 @@
 {
   "edit-id": "interface_state",
   "operation": "{{ 'merge' if not interface_enabled else 'remove' }}",
-  "target": "/interface/{{ interface_type }}={{ interface_name }}/shutdown"{{ "," if interface_shutdown }}
+  "target": "/interface/{{ interface_type }}={{ interface_name }}/shutdown"{{ "," if not interface_enabled }}
 {% if not interface_enabled %}
   "value": {
     "Cisco-IOS-XE-native:shutdown": ""
