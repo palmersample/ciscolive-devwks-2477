@@ -1,0 +1,56 @@
+{
+  "ietf-yang-patch:yang-patch": {
+    "patch-id": "update_interface_settings",
+    "edit": [
+      {
+        "edit-id": "interface_description",
+        "operation": "merge",
+        "target": "/interface/GigabitEthernet=1%2F0%2F3/description",
+        "value": {
+          "Cisco-IOS-XE-native:description": "Uplink to MCO1-1N-P23A"
+        }
+      },
+      {
+        "edit-id": "interface_state",
+        "operation": "remove",
+        "target": "/interface/GigabitEthernet=1%2F0%2F3/shutdown"
+      },
+      {
+        "edit-id": "interface_mtu",
+        "operation": "merge",
+        "target": "/interface/GigabitEthernet=1%2F0%2F3/mtu",
+        "value": {
+          "Cisco-IOS-XE-native:mtu": 1500
+        }
+      },
+      {
+        "edit-id": "switchport_bool",
+        "operation": "merge",
+        "target": "/interface/GigabitEthernet=1%2F0%2F3/switchport-conf/switchport",
+        "value": {
+          "Cisco-IOS-XE-native:switchport": false
+        }
+      },
+      {
+        "edit-id": "remove_switchport_config",
+        "operation": "remove",
+        "target": "/interface/GigabitEthernet=1%2F0%2F3/switchport-config/switchport"
+      },
+      {
+        "edit-id": "set_ip4_address",
+        "operation": "merge",
+        "target": "/interface/GigabitEthernet=1%2F0%2F3/ip",
+        "value": {
+          "Cisco-IOS-XE-native:ip": {
+            "address": {
+              "primary": {
+                "address": "192.168.10.10",
+                "mask": "255.255.255.0"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

@@ -2,7 +2,7 @@
 Interface data model definitions
 """
 # pylint: disable=unused-import
-import ipaddress
+from ipaddress import IPv4Interface
 import re
 from typing import Optional
 from pydantic import BaseModel, model_validator, Field, field_validator

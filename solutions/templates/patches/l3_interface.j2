@@ -10,8 +10,7 @@
   "edit-id": "remove_switchport_config",
   "operation": "remove",
   "target": "/interface/{{ interface_type }}={{ interface_name }}/switchport-config/switchport"
-}{% if (interface_ip4_address is defined and interface_ip4_address) and
-       (interface_ip4_mask is defined and interface_ip4_mask) %},
+}{% if interface_ip4_address is defined and interface_ip4_address %},
 {
   "edit-id": "set_ip4_address",
   "operation": "merge",
@@ -20,8 +19,8 @@
     "Cisco-IOS-XE-native:ip": {
       "address": {
         "primary": {
-          "address": "{{ interface_ip4_address }}",
-          "mask": "{{ interface_ip4_mask }}"
+          "address": "{{ interface_ip4_address.ip }}",
+          "mask": "{{ interface_ip4_address.netmask }}"
         }
       }
     }
